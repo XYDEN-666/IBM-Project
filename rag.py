@@ -5,6 +5,7 @@ import time
 from dataclasses import dataclass
 from typing import List, Optional
 
+print"Good Morning"
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.embeddings import OllamaEmbeddings
 from langchain_community.vectorstores import FAISS
