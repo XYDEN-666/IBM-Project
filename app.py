@@ -1,16 +1,23 @@
 # importing dependencies
-# Load environment variables
+# Load environment variables from a .env file
 from dotenv import load_dotenv
-# Streamlit for web UI
+# Streamlit for creating the web user interface
 import streamlit as st
+# PyPDF2 for reading and extracting text from PDF files
 from PyPDF2 import PdfReader
 # LangChain modules for text processing and model interaction
 from langchain.text_splitter import CharacterTextSplitter
+# Splits text into smaller chunks
 from langchain.embeddings import HuggingFaceEmbeddings
+# Generates embeddings for text
 from langchain.vectorstores import faiss
+# FAISS for efficient similarity search in vector stores
 from langchain.prompts import PromptTemplate
+# For creating custom prompts for the LLM
 from langchain.memory import ConversationBufferMemory
+# For storing conversation history
 from langchain.chains import ConversationalRetrievalChain
+# Chain for conversational Q&A with retrieval
 from langchain.chat_models import ChatOpenAI
 # Custom HTML templates for UI styling
 from htmlTemplates import css, bot_template, user_template
@@ -26,7 +33,17 @@ CUSTOM_QUESTION_PROMPT = PromptTemplate.from_template(custom_template)
 
 # extracting text from pdf
 def get_pdf_text(docs):
+ """
+    Extracts text content from a list of uploaded PDF files.
+
+    Args:
+        docs (list): A list of file-like objects representing uploaded PDF files.
+
+    Returns:
+        str: A single string containing all extracted text from the PDFs.
+    """
     text=""
+# Iterate through each uploaded PDF file
     for pdf in docs:
         pdf_reader=PdfReader(pdf)
         for page in pdf_reader.pages:
@@ -35,6 +52,15 @@ def get_pdf_text(docs):
 
 # converting text to chunks
 def get_chunks(raw_text):
+        """
+    Splits a large string of text into smaller, manageable chunks.
+
+    Args:
+        raw_text (str): The input text to be chunked.
+
+    Returns:
+        list: A list of text chunks (strings).
+    """
     text_splitter=CharacterTextSplitter(separator="\n",
                                         chunk_size=1000,
                                         chunk_overlap=200,
