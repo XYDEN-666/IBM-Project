@@ -77,7 +77,7 @@ class DocumentProcessor:
         except Exception as e:
             print(f"Error processing {pdf_path.name}: {e}")
             return None
-
+ # Invoke the LLM with the constructed prompt to get an answer
 class RAGSystem:
     def __init__(self, config: RAGConfig):
         self.config = config
