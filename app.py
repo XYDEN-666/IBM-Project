@@ -1,7 +1,10 @@
 # importing dependencies
+# Load environment variables
 from dotenv import load_dotenv
+# Streamlit for web UI
 import streamlit as st
 from PyPDF2 import PdfReader
+# LangChain modules for text processing and model interaction
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.embeddings import HuggingFaceEmbeddings
 from langchain.vectorstores import faiss
@@ -9,6 +12,7 @@ from langchain.prompts import PromptTemplate
 from langchain.memory import ConversationBufferMemory
 from langchain.chains import ConversationalRetrievalChain
 from langchain.chat_models import ChatOpenAI
+# Custom HTML templates for UI styling
 from htmlTemplates import css, bot_template, user_template
 
 # creating custom template to guide llm model
@@ -17,7 +21,7 @@ Chat History:
 {chat_history}
 Follow Up Input: {question}
 Standalone question:"""
-# Create a prompt template from the custom prompt string
+
 CUSTOM_QUESTION_PROMPT = PromptTemplate.from_template(custom_template)
 
 # extracting text from pdf
@@ -45,7 +49,7 @@ def get_vectorstore(chunks):
     vectorstore=faiss.FAISS.from_texts(texts=chunks,embedding=embeddings)
     return vectorstore
 
-# generating conversation chain  
+# Create a conversation chain with memory and retrieval-based QA  
 def get_conversationchain(vectorstore):
     llm=ChatOpenAI(temperature=0.2)
     memory = ConversationBufferMemory(memory_key='chat_history', 
@@ -58,7 +62,7 @@ def get_conversationchain(vectorstore):
                                 memory=memory)
     return conversation_chain
 
-# generating response from user queries and displaying them accordingly
+# Handle user queries and display conversation history
 def handle_question(question):
     response=st.session_state.conversation({'question': question})
     st.session_state.chat_history=response["chat_history"]
@@ -89,18 +93,18 @@ def main():
         if st.button("Process"):
             with st.spinner("Processing"):
                 
-                #get the pdf
+                
                 raw_text=get_pdf_text(docs)
                 
-                #get the text chunks
+                
                 text_chunks=get_chunks(raw_text)
                 
-                #create vectorstore
+                
                 vectorstore=get_vectorstore(text_chunks)
                 
                 #create conversation chain
                 st.session_state.conversation=get_conversationchain(vectorstore)
 
-
+# Run the app
 if __name__ == '__main__':
     main()
