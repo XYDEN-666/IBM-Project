@@ -1,5 +1,4 @@
 # importing dependencies
-# Load environment variables
 from dotenv import load_dotenv
 # Streamlit for web UI
 import streamlit as st
