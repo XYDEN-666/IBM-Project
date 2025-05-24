@@ -143,7 +143,12 @@ def main():
  # Initialize the configuration and the RAG system
     config = RAGConfig()
     rag_system = RAGSystem(config)
-# Example query to test the system
+  # Example: Ensure there's a PDF in your 'knowledge_base' directory for this to work.
+    # For example, create a 'knowledge_base' folder and put 'sample.pdf' in it.
+
+    # Example query to test the system
+    # Make sure your Ollama server is running with the specified models:
+    # `ollama run nomic-embed-text` and `ollama run gemma:2b` (or your configured models)
     response = rag_system.query("What is the purpose of the MCP?")
 # Output the model's response
     print(response)
