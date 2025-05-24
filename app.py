@@ -17,7 +17,7 @@ Chat History:
 {chat_history}
 Follow Up Input: {question}
 Standalone question:"""
-
+# Create a prompt template from the custom prompt string
 CUSTOM_QUESTION_PROMPT = PromptTemplate.from_template(custom_template)
 
 # extracting text from pdf
